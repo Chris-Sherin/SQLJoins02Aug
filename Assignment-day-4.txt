@@ -1,0 +1,55 @@
+--1) print the employee name and the number of titles each of them have published
+    select concat(fname,' ',lname) 'Employee Name', count(title) 'Number of Title'
+	from employee e join publishers p on e.pub_id= p.pub_id join titles t on t.pub_id=p.pub_id
+	group by fname,lname 
+
+--2) print the store name, title name, total price , quantity, price, publisher name for every book
+    select stor_name 'Store Name', title 'Title Name',price*qty 'Total',qty 'Quantity',price 'Price',pub_name 'Publisher Name'
+	from stores s join sales sa on s.stor_id= sa.stor_id join titles t on sa.title_id=t.title_id join publishers p on t.pub_id=p.pub_id
+
+--3) print every book name and  its author 's full name
+    select title 'Book Name',concat(au_fname,' ',au_lname) 'Author Name'
+	from titles t left outer join titleauthor ta on t.title_id= ta.title_id left outer join authors a on ta.au_id=a.au_id
+
+--4) print the author's full name and number of books written by each
+     select concat(au_fname,' ',au_lname) 'Author Name', count(title) 'Number of Books'
+	 from authors a left outer join titleauthor ta on a.au_id=ta.au_id left outer join titles t on ta.title_id=t.title_id
+	 group by au_fname,au_lname
+
+--5) print the author full name, publisher's name, title name, quantity sold, store name and the store address of all the books.
+    select concat(au_fname,' ',au_lname) 'Author Name',pub_name 'Publisher Name', title 'Title Name',qty 'Quantity',stor_name 'Store Name',stor_address 'Store Address'
+	from authors a left outer join titleauthor ta on a.au_id=ta.au_id left outer join titles t on ta.title_id=t.title_id left outer join sales s on t.title_id=s.title_id left outer join stores st on s.stor_id=st.stor_id left outer join publishers p on t.pub_id= p.pub_id
+
+
+--6) select author name and the average quantity sold for every author
+     select concat(au_fname,' ',au_lname) 'Author Name', avg(qty) 'Average Quantity'
+	 from authors a left outer join titleauthor ta on a.au_id=ta.au_id left outer join titles t on ta.title_id=t.title_id left outer join sales s on t.title_id=s.title_id
+	 group by au_fname,au_lname
+
+--7) print the store name and address of all the sales for a given title
+     select stor_name 'Store Name',stor_address 'Store Address',title 'Title'
+	 from titles t join sales s on t.title_id=s.title_id join stores st on s.stor_id=st.stor_id
+
+--8) what is the max quantity sold for every publisher?
+     select max(qty) 'Maximum Quantity',pub_name 'Publisher Name'
+	 from publishers p left outer join titles t on p.pub_id=t.pub_id left outer join sales s on t.title_id=s.title_id
+	 group by pub_name
+	 
+--9) print the employee names for a given publisher
+     select concat(fname,' ',lname) 'Employee Name',pub_name 'Publisher Name'
+	 from employee e join publishers p on e.pub_id=p.pub_id
+
+--10) Explore the function soundex. show an example query
+      --The soundex function is used to evaluate similarity between 2 strings and return a 4 character code
+	  --example
+	  select SOUNDEX('Paolo Accorti')
+
+--11) print the total sales(price*quantity) for every city in the author table
+      select price*qty'Total Sales',city 'City'
+	  from sales s join titles t on s.title_id=t.title_id join titleauthor ta on t.title_id = ta.title_id join authors a on ta.au_id=a.au_id
+
+--12) sort by date and print the store name and the latest purchase done by every store
+      select stor_name 'Store Name', ord_num 'Latest Purchase'
+	  from sales s join stores st on s.stor_id=st.stor_id
+	  order by ord_date
+	  
