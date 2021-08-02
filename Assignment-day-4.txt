@@ -53,3 +53,8 @@
 	  from sales s join stores st on s.stor_id=st.stor_id
 	  order by ord_date
 	  
+	  
+	  
+	  --FOR GIT ASSIGNMENT
+	  Select * from titles
+	  
